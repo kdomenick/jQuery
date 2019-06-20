@@ -1,0 +1,87 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>RSS Hospital Status</title>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  
+  <style>
+  	.Less {
+		background-color:#90b5e9;
+	}
+	.Busy {
+		background-color:#eaf803;
+	}
+	.More {
+		background-color:#fe6601;
+	}
+
+
+  </style>
+</head>
+<body>
+ 
+<div id="content-div"> 
+	<table>
+		<tr>
+			<td class="hosp"></td>
+			<td class="score"></td>
+		</tr>
+	</table>
+
+</div>
+		<script>
+		
+		
+		$.ajax({
+		        type: "get",
+				crossDomain : true,
+		        url: "https://yoursite/yourrss.xml",
+		        dataType: "xml",
+		        success: function(data) {
+		             
+					 $xml = $( data );
+					 $xml.find("item").each(function() {
+		              var $this = $(this), 
+		            item = {
+		                title:       $this.find("title").text()
+						
+		            };
+					var edstatustemp = "";
+					var edcolor = "";
+          
+          // Feed example had fields named edstatus and statuscolor, change as needed.
+					$this.children().each(function() {
+		              if (this.nodeName == "edstatus")
+					  {
+						edstatustemp = $(this).text();
+					  }
+					  if (this.nodeName == "statuscolor")
+					  {
+						edcolor = $(this).text();
+					  }
+					  
+					  });
+				
+				// Output items in table data elements, identified by classes.  Add a dynamic background color based on variable edcolor
+		    $('.hosp').append($('<h4/>').text(item.title));
+				$('.score').append($('<h5/>').text(edstatustemp));
+				$('h5').addClass(edcolor);
+				
+		        //etc...
+				  });
+		        },
+		        error: function(xhr, status) {
+		            /* handle error here */
+		            $("#show_table").html(status);
+		        }
+				
+		 });
+		</script>
+	
+
+ 
+</body>
+</html>
