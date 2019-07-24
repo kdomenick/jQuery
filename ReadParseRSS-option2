@@ -25,7 +25,9 @@
 </div>
 
 		<script>
-		
+		 // Feed example had fields named title, nedoc and nedoccolor, change as needed.
+		 // The page outputs a list of locations, nedoc scores, and a color indicating the severity of the score.
+		 // The title of this feed is also a facility code, which is a variable in a URL string of another application.
 		
 		$.ajax({
 		        type: "get",
