@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>RSS Hospital Status</title>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  
+  <style>
+      body {font-family: verdana, arial, helvetica, sans-serif; font-size: 70%; color:#746c6c;} 
+      table {border-collapse: collapse;}
+      td,th {padding: 6px; border: 1px solid #ccc; text-align: left;}
+    
+  </style>
+  
+</head>
+<body>
+ 
+<div id="content-div"> 
+	<table>
+		<tr>
+			<td align="center"><strong>NEDOC SCORE</strong></td>
+		</tr>
+	</table>
+
+</div>
+
+		<script>
+		
+		
+		$.ajax({
+		        type: "get",
+				crossDomain : true,
+		        url: "https://www.summithealth.org/feeds/patients-waiting/rss-nedoc.xml",
+		        dataType: "xml",
+		        success: function(data) {
+		             
+					 $xml = $( data );
+					 $xml.find("item").each(function() {
+					 	var vTitle = $(this).find('title').text();
+		              	var vNedoc = $(this).find('nedoc').text();						
+		              	var vNedoccolor = $(this).find('nedoccolor').text();
+		              	var vUrl = "http://summitapps/EDDashboard/status.htm?facility=" + vTitle;
+		              	var vDash = "<a target='blank' href='" + vUrl + "'>" + vTitle + "</a>";
+		            	$("<td class='score'></td>").html(vDash + ": " + vNedoc).appendTo("#content-div table tr");  		
+						$('.score').css('background-color', vNedoccolor);
+						
+					  	});
+				},
+				
+				error: function() {
+    				alert("An error occurred while processing XML file.");
+
+  				}
+	  
+				
+		 });
+		</script>
+	
+
+ 
+</body>
+</html>
